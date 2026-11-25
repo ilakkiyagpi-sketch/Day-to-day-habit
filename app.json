@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "Kudumbam",
+    "slug": "kudumbam",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.kudumbam.app",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Use Face ID to open Kudumbam instead of typing your PIN.",
+        "NSLocationWhenInUseUsageDescription": "Your location is only sent to Manu when you tap “Share my location”."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFF8EF",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.kudumbam.app",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "USE_BIOMETRIC"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "output": "single",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-localization",
+      "expo-font",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Use Face ID to open Kudumbam instead of typing your PIN."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Your location is only sent to Manu when you tap “Share my location”."
+        }
+      ]
+    ],
+    "scheme": "kudumbam",
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
