@@ -79,8 +79,9 @@ Pick "Open as Amma / Appa / Ilakkiya", choose any 4-digit PIN, and look around.
    (their real email addresses, tick "Auto confirm").
 6. **Link everyone:** open `supabase/seed.sql`, replace the three example emails, paste it into the **SQL Editor** and run it.
    Then edit the medicines, BP ranges and phone numbers to the real ones (Table Editor).
-7. **Connect the app:** copy `.env.example` to `.env` and fill in the **Project URL** and **anon public key**
-   from **Project Settings → API**.
+7. **Connect the app:** copy `.env.example` to `.env` and fill in the **Project URL** and the
+   **publishable key** (older projects call it the **anon public key**) from **Project Settings → API / API Keys**.
+   This key is meant to be public: the database rules (RLS) protect the data. Never use the **secret / service_role** key in the app.
 
 > Phone-number (SMS) sign-in needs a paid SMS provider (for example Twilio), so it is off.
 > Email codes are free. Say the word if you want SMS added.
