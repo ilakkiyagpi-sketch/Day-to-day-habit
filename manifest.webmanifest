@@ -1,0 +1,17 @@
+{
+  "name": "Kudumbam · குடும்பம்",
+  "short_name": "Kudumbam",
+  "description": "Family care helper for Amma, Appa and Ilakkiya — medicines, health, payments and day plans in Tamil and English.",
+  "lang": "ta",
+  "start_url": "/Day-to-day-habit/",
+  "scope": "/Day-to-day-habit/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF8EF",
+  "theme_color": "#0B5D4B",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
