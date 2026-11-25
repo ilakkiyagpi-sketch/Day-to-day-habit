@@ -1,4 +1,4 @@
-/** Manu's planning hub — reminders, medical logs and day plans arrive in Phase 3. */
+/** Ilakkiya's planning hub — reminders, medical logs and day plans arrive in Phase 3. */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Screen } from '../../components/Screen';

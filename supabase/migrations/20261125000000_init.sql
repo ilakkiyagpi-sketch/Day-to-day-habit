@@ -3,9 +3,9 @@
 --
 -- Access model
 --   * A parent sees and edits only their own rows.
---   * Manu (admin) can read AND write every row of parents linked to him in
+--   * Ilakkiya (admin) can read AND write every row of parents linked to the admin in
 --     `family_links` (settings like medicines/ranges/habits, and logs entered
---     "on behalf" — those carry added_by / created_by = Manu).
+--     "on behalf" — those carry added_by / created_by = Ilakkiya).
 --   * Parents never see each other's data, unless a parent turns on
 --     `profiles.share_with_spouse` (then their spouse gets READ access).
 --   * A few tables are admin-managed only: vital_ranges, family_links.
@@ -21,7 +21,7 @@ create extension if not exists pgcrypto;
 -- ---------------------------------------------------------------------------
 create type public.user_role      as enum ('parent', 'admin');
 create type public.user_space     as enum ('planner', 'reading');
-create type public.location_mode  as enum ('home', 'manu_house');
+create type public.location_mode  as enum ('home', 'child_house');
 create type public.dose_status    as enum ('taken_with_photo', 'taken_no_photo', 'skipped', 'missed');
 create type public.proof_mode     as enum ('photo_required', 'tap_to_confirm');
 create type public.reminder_style as enum ('notification', 'alarm');
@@ -115,7 +115,7 @@ language sql stable as $$
   select auth.uid() = target or public.is_admin_of(target);
 $$;
 
--- Create a profile automatically when Manu creates an auth user.
+-- Create a profile automatically when Ilakkiya creates an auth user.
 create or replace function public.handle_new_user() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
@@ -144,7 +144,7 @@ create table public.medicines (
   stock_count     integer,
   refill_alert_at integer not null default 5,          -- warn when stock ≤ N days of doses
   proof_mode      public.proof_mode not null default 'photo_required',
-  image_path      text,                                -- pill/strip photo uploaded by Manu
+  image_path      text,                                -- pill/strip photo uploaded by Ilakkiya
   active          boolean not null default true,
   created_at      timestamptz not null default now(),
   updated_at      timestamptz not null default now()
@@ -161,7 +161,7 @@ create table public.medicine_logs (
   photo_hash      text,
   snooze_count    smallint not null default 0 check (snooze_count between 0 and 2),
   reason          text,
-  retake_requested boolean not null default false,     -- Manu: "Not clear — please retake"
+  retake_requested boolean not null default false,     -- Ilakkiya: "Not clear — please retake"
   added_by        uuid references auth.users (id),
   created_at      timestamptz not null default now(),
   updated_at      timestamptz not null default now(),
@@ -286,7 +286,7 @@ create table public.reminders (
 
 create table public.plan_templates (
   id         uuid primary key default gen_random_uuid(),
-  user_id    uuid not null references auth.users (id) on delete cascade, -- owner (Manu)
+  user_id    uuid not null references auth.users (id) on delete cascade, -- owner (Ilakkiya)
   created_by uuid not null references auth.users (id),
   name       text not null,
   tasks      jsonb not null default '[]'::jsonb,
@@ -423,7 +423,7 @@ create table public.kid_routine (
 );
 
 -- ---------------------------------------------------------------------------
--- Alerts for Manu
+-- Alerts for Ilakkiya
 -- ---------------------------------------------------------------------------
 create table public.alerts (
   id         uuid primary key default gen_random_uuid(),
@@ -470,13 +470,13 @@ begin
 
 end $$;
 
--- vital_ranges: parent reads; only the linked admin (Manu) sets them.
+-- vital_ranges: parent reads; only the linked admin (Ilakkiya) sets them.
 create policy vital_ranges_read   on public.vital_ranges for select using (public.can_read(user_id));
 create policy vital_ranges_insert on public.vital_ranges for insert with check (public.is_admin_of(user_id));
 create policy vital_ranges_update on public.vital_ranges for update using (public.is_admin_of(user_id)) with check (public.is_admin_of(user_id));
 create policy vital_ranges_delete on public.vital_ranges for delete using (public.is_admin_of(user_id));
 
--- plan_templates belong to Manu himself (user_id = Manu).
+-- plan_templates belong to the admin (user_id = Ilakkiya).
 create policy plan_templates_all on public.plan_templates for all
   using (auth.uid() = user_id) with check (auth.uid() = user_id and created_by = auth.uid());
 
@@ -503,14 +503,14 @@ create policy family_links_read on public.family_links for select
   using (user_id = auth.uid() or admin_id = auth.uid());
 
 -- alerts: parent's app may raise alerts about themselves (e.g. "can't take
--- photo"); Manu reads and resolves them.
+-- photo"); Ilakkiya reads and resolves them.
 create policy alerts_read   on public.alerts for select using (public.can_read(user_id));
 create policy alerts_insert on public.alerts for insert with check (public.can_write(user_id));
 create policy alerts_update on public.alerts for update using (public.is_admin_of(user_id)) with check (public.is_admin_of(user_id));
 create policy alerts_delete on public.alerts for delete using (public.is_admin_of(user_id));
 
 -- ---------------------------------------------------------------------------
--- Realtime: changes Manu makes reach the parent's phone instantly (and v.v.)
+-- Realtime: changes Ilakkiya makes reach the parent's phone instantly (and v.v.)
 -- ---------------------------------------------------------------------------
 alter publication supabase_realtime add table
   public.medicines, public.medicine_logs, public.reminders, public.day_plans, public.tasks,
@@ -523,9 +523,9 @@ alter publication supabase_realtime add table
 -- ---------------------------------------------------------------------------
 insert into storage.buckets (id, name, public) values
   ('medicine-proofs', 'medicine-proofs', false),  -- live photos for doses (auto-deleted after 90 days)
-  ('medicine-images', 'medicine-images', false),  -- pill/strip pictures uploaded by Manu
+  ('medicine-images', 'medicine-images', false),  -- pill/strip pictures uploaded by Ilakkiya
   ('documents',       'documents',       false),  -- lab reports, prescriptions
-  ('voice',           'voice',           false),  -- voice notes, day-plan audio, Manu's voice reminders
+  ('voice',           'voice',           false),  -- voice notes, day-plan audio, Ilakkiya's voice reminders
   ('family-photos',   'family-photos',   false)   -- grandchild photos for the home screen
 on conflict (id) do nothing;
 

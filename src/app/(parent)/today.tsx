@@ -14,6 +14,8 @@ import { Card } from '../../components/Card';
 import { AppText } from '../../components/AppText';
 import { BigButton } from '../../components/BigButton';
 import { useToast } from '../../components/Toast';
+import { TextSizeControl } from '../../components/TextSizeControl';
+import { PaymentsDueCard } from '../../components/PaymentsDueCard';
 import { useAuth } from '../../lib/auth';
 import { usePrefs } from '../../theme/PreferencesProvider';
 import { dayPart, formatTime, nextByTime } from '../../lib/time';
@@ -42,7 +44,8 @@ export default function Today() {
     const apply = (done: boolean) =>
       setDoneHabits((prev) => {
         const s = new Set(prev);
-        done ? s.add(id) : s.delete(id);
+        if (done) s.add(id);
+        else s.delete(id);
         return s;
       });
     apply(!wasDone);
@@ -55,6 +58,7 @@ export default function Today() {
 
   return (
     <Screen>
+      <TextSizeControl />
       <AppText variant="display" accessibilityRole="header" className="mb-4">
         {t(`greeting.${dayPart()}`, { name: profile.name })}
       </AppText>
@@ -124,7 +128,7 @@ export default function Today() {
                   selected ? 'border-primary bg-good-bg' : 'border-transparent'
                 }`}
               >
-                <AppText style={{ fontSize: 40, lineHeight: 52 }}>{face}</AppText>
+                <AppText style={{ fontSize: 32, lineHeight: 42 }}>{face}</AppText>
                 <AppText variant="caption" className="text-center">
                   {t(`moods.${score}`)}
                 </AppText>
@@ -148,6 +152,9 @@ export default function Today() {
           <BigButton icon="add-circle" label={t('today.addPages')} onPress={() => router.push('/my-space')} />
         </Card>
       )}
+
+      {/* Payment reminders (only when something is due this week) */}
+      <PaymentsDueCard hideWhenEmpty />
 
       {/* 5. Daily "I'm okay" check-in */}
       {checkedIn ? (

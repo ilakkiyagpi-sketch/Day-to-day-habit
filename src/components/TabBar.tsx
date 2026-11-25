@@ -17,7 +17,7 @@ export function useTabScreenOptions() {
     tabBarActiveTintColor: color('primary'),
     tabBarInactiveTintColor: color('muted'),
     tabBarStyle: {
-      height: 100 + insets.bottom,
+      height: 88 + insets.bottom,
       paddingTop: 8,
       paddingBottom: 8 + insets.bottom,
       backgroundColor: color('surface'),
@@ -31,8 +31,8 @@ export function useTabScreenOptions() {
         maxFontSizeMultiplier={1}
         style={{
           color: c,
-          fontSize: Math.min(17 * scale, 19), // capped so 4 labels always fit
-          lineHeight: Math.min(17 * scale, 19) * 1.3,
+          fontSize: Math.min(15 * scale, 18), // capped so 4 labels always fit
+          lineHeight: Math.min(15 * scale, 18) * 1.3,
           fontFamily: FONT_FAMILY[language].bold,
           textAlign: 'center',
         }}
@@ -40,10 +40,12 @@ export function useTabScreenOptions() {
         {children}
       </Text>
     ),
-    tabBarItemStyle: { minHeight: 72 },
+    tabBarItemStyle: { minHeight: 64 },
   };
 }
 
-export const tabIcon =
-  (name: keyof typeof Ionicons.glyphMap) =>
-  ({ color }: { color: ColorValue }) => <Ionicons name={name} size={32} color={color as string} />;
+export function tabIcon(name: keyof typeof Ionicons.glyphMap) {
+  return function TabIcon({ color }: { color: ColorValue }) {
+    return <Ionicons name={name} size={28} color={color as string} />;
+  };
+}

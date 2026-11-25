@@ -2,7 +2,7 @@
  * Per-device display preferences: language, font size, colour scheme.
  * Stored locally so they apply instantly (even offline, even before login).
  * When signed in, AuthProvider also mirrors language/font size from the profile
- * so Manu can change them remotely.
+ * so Ilakkiya can change them remotely.
  */
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useColorScheme, View } from 'react-native';
@@ -29,7 +29,7 @@ type PrefsContext = Prefs & {
 };
 
 const KEY = 'prefs.v1';
-const DEFAULTS: Prefs = { language: 'ta', fontScale: 'large', scheme: 'system' };
+const DEFAULTS: Prefs = { language: 'ta', fontScale: 'normal', scheme: 'system' };
 const Ctx = createContext<PrefsContext | null>(null);
 
 export function PreferencesProvider({ children }: { children: React.ReactNode }) {

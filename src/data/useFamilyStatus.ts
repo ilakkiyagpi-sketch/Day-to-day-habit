@@ -1,5 +1,5 @@
 /**
- * Today's status for each linked parent, for Manu's dashboard.
+ * Today's status for each linked parent, for Ilakkiya's dashboard.
  * Phase 1: demo values (or an empty list with Supabase configured).
  * Phase 3 replaces this with live queries + realtime subscriptions.
  */

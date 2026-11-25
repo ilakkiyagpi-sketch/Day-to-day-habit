@@ -32,7 +32,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {toast ? (
         <View
           pointerEvents="box-none"
-          style={{ position: 'absolute', left: 12, right: 12, bottom: insets.bottom + 116 }}
+          style={{ position: 'absolute', left: 12, right: 12, bottom: insets.bottom + 100 }}
         >
           <View
             accessibilityLiveRegion="polite"

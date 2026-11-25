@@ -1,4 +1,4 @@
-/** Shown if someone signs in but Manu hasn't created their profile yet. */
+/** Shown if someone signs in but Ilakkiya hasn't created their profile yet. */
 import React from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';

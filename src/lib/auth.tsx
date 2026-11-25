@@ -34,6 +34,8 @@ type AuthContext = {
   markUnlocked: () => void;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  /** Change own/linked profile fields (saved to Supabase; in-memory in demo mode). */
+  updateProfile: (patch: Partial<Profile>) => Promise<void>;
 };
 
 const Ctx = createContext<AuthContext | null>(null);
@@ -104,7 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!supabase) return { error: 'demo' };
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      // Accounts are created by Manu (see README), not by self sign-up.
+      // Accounts are created by Ilakkiya (see README), not by self sign-up.
       options: { shouldCreateUser: false },
     });
     return error ? { error: error.message } : {};
@@ -138,6 +140,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (session) await loadProfile(session.user.id);
   };
 
+  const updateProfile: AuthContext['updateProfile'] = async (patch) => {
+    if (!profile) return;
+    setProfile({ ...profile, ...patch });
+    if (supabase) await supabase.from('profiles').update(patch).eq('id', profile.id);
+  };
+
   return (
     <Ctx.Provider
       value={{
@@ -152,6 +160,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         markUnlocked: () => setPinState('unlocked'),
         signOut,
         refreshProfile,
+        updateProfile,
       }}
     >
       {children}

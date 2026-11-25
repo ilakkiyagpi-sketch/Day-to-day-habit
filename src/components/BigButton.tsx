@@ -51,14 +51,14 @@ export function BigButton({
       accessibilityHint={accessibilityHint}
       accessibilityState={{ disabled: !!disabled, busy: !!loading }}
       className={`${k.box} rounded-card px-5 flex-row items-center justify-center ${
-        size === 'huge' ? 'min-h-[96px]' : 'min-h-tap'
+        size === 'huge' ? 'min-h-[80px]' : 'min-h-tap'
       } ${disabled ? 'opacity-50' : ''} active:opacity-80`}
     >
       {loading ? (
         <ActivityIndicator color={iconColor} />
       ) : (
         <View className="flex-row items-center py-3 flex-shrink">
-          {icon ? <Ionicons name={icon} size={size === 'huge' ? 36 : 28} color={iconColor} /> : null}
+          {icon ? <Ionicons name={icon} size={size === 'huge' ? 30 : 24} color={iconColor} /> : null}
           <AppText
             variant={size === 'huge' ? 'title' : 'lead'}
             bold

@@ -15,7 +15,7 @@ export default function ParentLayout() {
       <Tabs.Screen name="help" options={{ title: t('tabs.help'), tabBarIcon: tabIcon('call') }} />
       {/* Reachable from My Space, not shown as tabs: */}
       <Tabs.Screen name="settings" options={{ href: null }} />
-      <Tabs.Screen name="what-manu-sees" options={{ href: null }} />
+      <Tabs.Screen name="what-admin-sees" options={{ href: null }} />
     </Tabs>
   );
 }

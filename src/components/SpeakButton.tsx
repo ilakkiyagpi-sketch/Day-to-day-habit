@@ -38,7 +38,7 @@ export function SpeakButton({ text }: { text: string }) {
       accessibilityLabel={t('common.readAloud')}
       className="min-h-tap min-w-tap flex-row items-center px-2 rounded-xl active:opacity-70"
     >
-      <Ionicons name={speaking ? 'stop-circle' : 'volume-high'} size={28} color={color('primary')} />
+      <Ionicons name={speaking ? 'stop-circle' : 'volume-high'} size={24} color={color('primary')} />
       <AppText variant="caption" bold className="ml-1 text-primary">
         {t('common.readAloud')}
       </AppText>

@@ -2,14 +2,23 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { AppText } from './AppText';
+import { BigButton } from './BigButton';
 import { StatusBanners } from './StatusBanners';
 
-type Props = { title?: string; children: React.ReactNode; scroll?: boolean };
+type Props = { title?: string; children: React.ReactNode; scroll?: boolean; back?: boolean };
 
-export function Screen({ title, children, scroll = true }: Props) {
+export function Screen({ title, children, scroll = true, back }: Props) {
+  const { t } = useTranslation();
   const body = (
     <>
+      {back ? (
+        <View className="self-start mb-2">
+          <BigButton kind="ghost" icon="arrow-back" label={t('common.back')} onPress={() => router.back()} />
+        </View>
+      ) : null}
       {title ? (
         <AppText variant="display" accessibilityRole="header" className="mb-4">
           {title}

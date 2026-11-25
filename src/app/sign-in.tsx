@@ -78,11 +78,11 @@ export default function SignIn() {
           <AppText variant="title" className="mb-3">
             {t('auth.demoTitle')}
           </AppText>
-          {(['amma', 'appa', 'manu'] as const).map((who) => (
+          {(['amma', 'appa', 'ilakkiya'] as const).map((who) => (
             <View key={who} className="mb-3">
               <BigButton
-                kind={who === 'manu' ? 'secondary' : 'primary'}
-                icon={who === 'manu' ? 'people' : 'person'}
+                kind={who === 'ilakkiya' ? 'secondary' : 'primary'}
+                icon={who === 'ilakkiya' ? 'people' : 'person'}
                 label={t('auth.demoAs', { name: who[0].toUpperCase() + who.slice(1) })}
                 onPress={() => signInDemo(who)}
               />

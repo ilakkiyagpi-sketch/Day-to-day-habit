@@ -1,5 +1,5 @@
 /**
- * SOS / Help: giant "Call Manu", ambulance 108, other contacts, nearest
+ * SOS / Help: giant "Call Ilakkiya", ambulance 108, other contacts, nearest
  * hospital (opens maps), "Share my location" (SMS with a maps link), and the
  * Medical ID card readable by anyone in an emergency.
  */
@@ -25,8 +25,8 @@ export default function Help() {
 
   const e = profile.emergency ?? {};
   const contacts = e.contacts ?? [];
-  // Manu is stored as the first emergency contact when he sets up the profile.
-  const manuPhone = contacts[0]?.phone ?? (isDemo ? DEMO_ADMIN_PHONE : '');
+  // Ilakkiya is stored as the first emergency contact when the profile is set up.
+  const adminPhone = contacts[0]?.phone ?? (isDemo ? DEMO_ADMIN_PHONE : '');
   const meds = isDemo ? (DEMO_MEDICINES[profile.id] ?? []).map((m) => m.name) : [];
 
   const shareLocation = async () => {
@@ -42,7 +42,7 @@ export default function Help() {
       const url = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
       const body = encodeURIComponent(t('help.locationMessage', { url }));
       // iOS uses "&body=", Android "?body=".
-      await Linking.openURL(`sms:${manuPhone}${Platform.OS === 'ios' ? '&' : '?'}body=${body}`);
+      await Linking.openURL(`sms:${adminPhone}${Platform.OS === 'ios' ? '&' : '?'}body=${body}`);
     } finally {
       setSharing(false);
     }
@@ -57,8 +57,8 @@ export default function Help() {
 
   return (
     <Screen title={t('help.title')}>
-      {manuPhone ? (
-        <BigButton size="huge" kind="danger" icon="call" label={t('help.callManu')} onPress={() => call(manuPhone)} />
+      {adminPhone ? (
+        <BigButton size="huge" kind="danger" icon="call" label={t('help.callAdmin')} onPress={() => call(adminPhone)} />
       ) : null}
       <View className="h-3" />
       <BigButton size="huge" kind="danger" icon="medical" label={t('help.call108')} onPress={() => call('108')} />

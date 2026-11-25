@@ -3,7 +3,7 @@
 export type Role = 'parent' | 'admin';
 /** Which personal space a parent gets: Amma = work planner, Appa = reading. */
 export type Space = 'planner' | 'reading' | null;
-export type LocationMode = 'home' | 'manu_house';
+export type LocationMode = 'home' | 'child_house';
 
 export type EmergencyInfo = {
   blood_group?: string;
@@ -20,7 +20,7 @@ export type Profile = {
   role: Role;
   space: Space;
   language: 'en' | 'ta';
-  font_scale: 'normal' | 'large' | 'xl';
+  font_scale: 'small' | 'normal' | 'large' | 'xl';
   location_mode: LocationMode;
   phone: string | null;
   emergency: EmergencyInfo;

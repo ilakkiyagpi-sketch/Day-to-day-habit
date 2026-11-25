@@ -1,7 +1,7 @@
 /**
  * "My Space": Amma sees her work planner sections, Appa sees reading,
- * astrology and the At home / At Manu's house toggle. Sections are filled in
- * Phase 4 (Amma) and Phase 5 (Appa). Settings and "What Manu sees" live here.
+ * astrology and the At home / At Ilakkiya's house toggle. Sections are filled in
+ * Phase 4 (Amma) and Phase 5 (Appa). Settings and "What Ilakkiya sees" live here.
  */
 import React, { useState } from 'react';
 import { View } from 'react-native';
@@ -32,7 +32,7 @@ export default function MySpace() {
       : ([
           { key: 'bookshelf', icon: 'library' },
           { key: 'astrology', icon: 'planet' },
-          ...(location === 'manu_house' ? ([{ key: 'grandchild', icon: 'happy' }] as const) : []),
+          ...(location === 'child_house' ? ([{ key: 'grandchild', icon: 'happy' }] as const) : []),
         ] as const);
 
   return (
@@ -45,7 +45,7 @@ export default function MySpace() {
             onChange={setLocation}
             options={[
               { value: 'home', label: t('mySpace.atHome') },
-              { value: 'manu_house', label: t('mySpace.atManus') },
+              { value: 'child_house', label: t('mySpace.atChildHouse') },
             ]}
           />
         </Card>
@@ -58,7 +58,9 @@ export default function MySpace() {
       ))}
 
       <View className="mt-2">
-        <BigButton kind="secondary" icon="eye" label={t('mySpace.whatManuSees')} onPress={() => router.push('/what-manu-sees')} />
+        <BigButton icon="wallet" label={t('mySpace.payments')} onPress={() => router.push('/payments')} />
+        <View className="h-3" />
+        <BigButton kind="secondary" icon="eye" label={t('mySpace.whatAdminSees')} onPress={() => router.push('/what-admin-sees')} />
         <View className="h-3" />
         <BigButton kind="secondary" icon="settings" label={t('mySpace.settings')} onPress={() => router.push('/settings')} />
       </View>

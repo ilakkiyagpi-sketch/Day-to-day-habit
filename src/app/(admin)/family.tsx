@@ -1,5 +1,5 @@
 /**
- * Manu's dashboard: one status card per parent (medicines ✓/✗, last BP with
+ * Ilakkiya's dashboard: one status card per parent (medicines ✓/✗, last BP with
  * colour, mood, check-in, habits %, Amma's tasks / Appa's pages) + alerts.
  */
 import React from 'react';
@@ -9,6 +9,8 @@ import { Screen } from '../../components/Screen';
 import { Card } from '../../components/Card';
 import { AppText } from '../../components/AppText';
 import { BigButton } from '../../components/BigButton';
+import { TextSizeControl } from '../../components/TextSizeControl';
+import { PaymentsDueCard } from '../../components/PaymentsDueCard';
 import { useFamilyStatus, type ParentStatus } from '../../data/useFamilyStatus';
 import { formatTime } from '../../lib/time';
 
@@ -21,6 +23,7 @@ export default function Family() {
   const { parents, alerts } = useFamilyStatus();
   return (
     <Screen title={t('admin.familyToday')}>
+      <TextSizeControl />
       <Card title={t('admin.alerts')} icon="notifications" tone={alerts.length ? 'warn' : 'good'}>
         {alerts.length ? (
           alerts.map((a) => (
@@ -32,6 +35,7 @@ export default function Family() {
           <AppText>{t('admin.noAlerts')}</AppText>
         )}
       </Card>
+      <PaymentsDueCard />
       {parents.map((p) => (
         <ParentCard key={p.profile.id} status={p} />
       ))}

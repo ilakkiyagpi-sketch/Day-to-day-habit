@@ -1,22 +1,25 @@
 /**
- * Type scale. Base body text is 18px (never smaller), headings 24–28px.
- * Everything is multiplied by the user's font-size setting.
+ * Type scale (at "Normal"): body 17px, headings 21–25px.
+ * Everything is multiplied by the user's text-size setting (Small → Extra large).
  */
-export type FontScale = 'normal' | 'large' | 'xl';
+export type FontScale = 'small' | 'normal' | 'large' | 'xl';
+
+export const FONT_SCALES: FontScale[] = ['small', 'normal', 'large', 'xl'];
 
 export const FONT_SCALE_FACTOR: Record<FontScale, number> = {
+  small: 0.88,
   normal: 1,
-  large: 1.2,
-  xl: 1.4,
+  large: 1.15,
+  xl: 1.3,
 };
 
 export const TEXT_SIZES = {
-  caption: 18, // smallest text allowed anywhere
-  body: 20,
-  lead: 22,
-  title: 26,
-  display: 32,
-  huge: 44, // big numbers (BP readings, counts)
+  caption: 15,
+  body: 17,
+  lead: 18,
+  title: 21,
+  display: 25,
+  huge: 34, // big numbers (BP readings, counts)
 } as const;
 
 export type TextVariant = keyof typeof TEXT_SIZES;

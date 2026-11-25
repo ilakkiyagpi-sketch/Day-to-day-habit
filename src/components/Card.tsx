@@ -30,7 +30,7 @@ export function Card({ title, icon, speakText, tone = 'default', children }: Pro
     <View className={`${TONE[tone]} border rounded-card p-4 mb-4`}>
       {/* Title on its own row so long Tamil titles never collide with the button. */}
       <View className="flex-row items-center mb-2">
-        {icon ? <Ionicons name={icon} size={28} color={color('accent')} /> : null}
+        {icon ? <Ionicons name={icon} size={24} color={color('accent')} /> : null}
         <AppText variant="lead" bold className={`flex-1 ${icon ? 'ml-2' : ''}`} accessibilityRole="header">
           {title}
         </AppText>

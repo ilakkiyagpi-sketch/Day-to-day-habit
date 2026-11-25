@@ -6,7 +6,8 @@
  *   signed in, PIN not set  → /pin   (setup)
  *   signed in, locked       → /pin   (enter)
  *   unlocked parent         → (parent) tabs: Today · Health · My Space · Help
- *   unlocked admin (Manu)   → (admin) tabs:  Family · Plans · Settings
+ *   unlocked admin (Ilakkiya) → (admin) tabs: Family · Payments · Plans · Settings
+ *   anyone unlocked         → /payments, /payment-edit (stacked over the tabs)
  */
 import '../../global.css';
 import '../i18n';
@@ -22,6 +23,8 @@ import { NotoSansTamil_700Bold } from '@expo-google-fonts/noto-sans-tamil/700Bol
 import { PreferencesProvider, usePrefs } from '../theme/PreferencesProvider';
 import { AuthProvider, useAuth } from '../lib/auth';
 import { ToastProvider } from '../components/Toast';
+import { PaymentsProvider } from '../data/payments';
+import { useNotificationTaps } from '../lib/useNotificationTaps';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -36,9 +39,11 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <PreferencesProvider>
         <AuthProvider>
-          <ToastProvider>
-            <Guarded fontsLoaded={fontsLoaded} />
-          </ToastProvider>
+          <PaymentsProvider>
+            <ToastProvider>
+              <Guarded fontsLoaded={fontsLoaded} />
+            </ToastProvider>
+          </PaymentsProvider>
         </AuthProvider>
       </PreferencesProvider>
     </SafeAreaProvider>
@@ -49,12 +54,13 @@ function Guarded({ fontsLoaded }: { fontsLoaded: boolean }) {
   const prefs = usePrefs();
   const { loading, session, profile, pinState, isDemo } = useAuth();
   const ready = fontsLoaded && prefs.ready && !loading;
+  useNotificationTaps();
 
   useEffect(() => {
     if (ready) SplashScreen.hideAsync().catch(() => {});
   }, [ready]);
 
-  // Language and text size are managed by Manu on the profile; apply them.
+  // Language and text size are managed by Ilakkiya on the profile; apply them.
   useEffect(() => {
     if (!profile) return;
     if (profile.language !== prefs.language) prefs.setLanguage(profile.language);
@@ -87,6 +93,11 @@ function Guarded({ fontsLoaded }: { fontsLoaded: boolean }) {
         </Stack.Protected>
         <Stack.Protected guard={unlocked && profile?.role === 'admin'}>
           <Stack.Screen name="(admin)" />
+        </Stack.Protected>
+        {/* Shared by everyone, opened on top of the tabs */}
+        <Stack.Protected guard={unlocked && !!profile}>
+          <Stack.Screen name="payments" />
+          <Stack.Screen name="payment-edit" />
         </Stack.Protected>
       </Stack>
     </>

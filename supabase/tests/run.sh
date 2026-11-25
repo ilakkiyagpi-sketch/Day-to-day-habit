@@ -11,7 +11,7 @@ out=$(psql -qtA -v ON_ERROR_STOP=1 -d "$DB" -f tests/rls_test.sql 2>&1) || { ech
 echo "$out" | grep -E 'ok -'
 # Seed check: create the three users, then run seed.sql
 psql -qtA -v ON_ERROR_STOP=1 -d "$DB" -c "insert into auth.users (id,email) values
-  (gen_random_uuid(),'manu@example.com'),(gen_random_uuid(),'amma@example.com'),(gen_random_uuid(),'appa@example.com')"
+  (gen_random_uuid(),'ilakkiya@example.com'),(gen_random_uuid(),'amma@example.com'),(gen_random_uuid(),'appa@example.com')"
 psql -qtA -v ON_ERROR_STOP=1 -d "$DB" -f seed.sql
 psql -qtA -v ON_ERROR_STOP=1 -d "$DB" -f seed.sql   # idempotent
 echo "seed ok: $(psql -qtA -d "$DB" -c 'select count(*) from public.medicines') medicines, $(psql -qtA -d "$DB" -c 'select count(*) from public.habits') habits"

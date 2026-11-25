@@ -4,7 +4,7 @@
 begin;
 
 insert into auth.users (id, email, raw_user_meta_data) values
-  ('00000000-0000-0000-0000-00000000a000', 'manu@example.com', '{"name":"Manu"}'),
+  ('00000000-0000-0000-0000-00000000a000', 'ilakkiya@example.com', '{"name":"Ilakkiya"}'),
   ('00000000-0000-0000-0000-00000000a001', 'amma@example.com', '{"name":"Amma"}'),
   ('00000000-0000-0000-0000-00000000a002', 'appa@example.com', '{"name":"Appa"}');
 update public.profiles set role = 'admin' where id = '00000000-0000-0000-0000-00000000a000';
@@ -34,11 +34,11 @@ select pg_temp.expect((select count(*) from public.profiles) = 1, 'Amma sees onl
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a002');
 select pg_temp.expect((select count(*) from public.medicines where name = 'Amma BP') = 0, 'Appa cannot see Amma (no sharing)');
 
--- Manu sees both
+-- Ilakkiya sees both
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a000');
-select pg_temp.expect((select count(*) from public.medicines) = 2, 'Manu sees both parents');
+select pg_temp.expect((select count(*) from public.medicines) = 2, 'Ilakkiya sees both parents');
 
--- Manu can add a medicine for Amma; Amma cannot add one for Appa
+-- Ilakkiya can add a medicine for Amma; Amma cannot add one for Appa
 insert into public.medicines (user_id, name) values ('00000000-0000-0000-0000-00000000a001', 'Vitamin D');
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a001');
 do $$ begin
@@ -47,7 +47,7 @@ do $$ begin
 exception when insufficient_privilege then raise notice 'ok - Amma cannot write Appa''s rows';
 end $$;
 
--- Parents cannot set their own vital ranges; Manu can
+-- Parents cannot set their own vital ranges; Ilakkiya can
 do $$ begin
   insert into public.vital_ranges (user_id, type, min, max)
   values ('00000000-0000-0000-0000-00000000a001', 'bp', '{"sys":90}', '{"sys":140}');
@@ -57,7 +57,7 @@ end $$;
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a000');
 insert into public.vital_ranges (user_id, type, min, max)
 values ('00000000-0000-0000-0000-00000000a001', 'bp', '{"sys":90,"dia":60}', '{"sys":140,"dia":90}');
-select pg_temp.expect(true, 'Manu sets Amma''s BP range');
+select pg_temp.expect(true, 'Ilakkiya sets Amma''s BP range');
 
 -- A parent cannot promote themselves to admin
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a001');
@@ -83,6 +83,20 @@ insert into storage.objects (bucket_id, name) values ('medicine-proofs', '000000
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a002');
 select pg_temp.expect((select count(*) from storage.objects) = 0, 'Appa cannot see Amma''s photos');
 select pg_temp.act_as('00000000-0000-0000-0000-00000000a000');
-select pg_temp.expect((select count(*) from storage.objects) = 1, 'Manu can see Amma''s photos');
+select pg_temp.expect((select count(*) from storage.objects) = 1, 'Ilakkiya can see Amma''s photos');
+
+-- Payments: Ilakkiya adds Amma's rent; Appa cannot see it; Amma can mark it paid
+select pg_temp.act_as('00000000-0000-0000-0000-00000000a000');
+insert into public.payments (user_id, created_by, category, title, amount, due_date, anchor_day)
+values ('00000000-0000-0000-0000-00000000a001', '00000000-0000-0000-0000-00000000a000', 'rent', 'Rent', 12000, '2026-12-05', 5);
+select pg_temp.act_as('00000000-0000-0000-0000-00000000a002');
+select pg_temp.expect((select count(*) from public.payments) = 0, 'Appa cannot see Amma''s payments');
+select pg_temp.act_as('00000000-0000-0000-0000-00000000a001');
+insert into public.payment_logs (user_id, payment_id, period_due_date, recorded_by)
+select user_id, id, due_date, '00000000-0000-0000-0000-00000000a001' from public.payments;
+update public.payments set due_date = '2027-01-05';
+select pg_temp.expect((select due_date from public.payments) = '2027-01-05', 'Amma marks her rent paid');
+update public.profiles set font_scale = 'small' where id = '00000000-0000-0000-0000-00000000a001';
+select pg_temp.expect((select font_scale from public.profiles where id = '00000000-0000-0000-0000-00000000a001') = 'small', 'small text size allowed');
 
 rollback;

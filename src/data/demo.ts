@@ -5,14 +5,14 @@
 import type { Profile } from '../lib/types';
 
 const base = {
-  font_scale: 'large' as const,
+  font_scale: 'normal' as const,
   location_mode: 'home' as const,
   share_with_spouse: false,
 };
 
 export const DEMO_ADMIN_PHONE = '+910000000000';
 
-export const DEMO_PROFILES: Record<'amma' | 'appa' | 'manu', Profile> = {
+export const DEMO_PROFILES: Record<'amma' | 'appa' | 'ilakkiya', Profile> = {
   amma: {
     ...base,
     id: '00000000-0000-0000-0000-00000000a001',
@@ -27,7 +27,7 @@ export const DEMO_PROFILES: Record<'amma' | 'appa' | 'manu', Profile> = {
       allergies: 'Penicillin',
       doctor_name: 'Dr. Lakshmi',
       doctor_phone: '+910000000001',
-      contacts: [{ name: 'Manu', phone: DEMO_ADMIN_PHONE }],
+      contacts: [{ name: 'Ilakkiya', phone: DEMO_ADMIN_PHONE }],
     },
   },
   appa: {
@@ -44,15 +44,14 @@ export const DEMO_PROFILES: Record<'amma' | 'appa' | 'manu', Profile> = {
       allergies: '',
       doctor_name: 'Dr. Raman',
       doctor_phone: '+910000000002',
-      contacts: [{ name: 'Manu', phone: DEMO_ADMIN_PHONE }],
+      contacts: [{ name: 'Ilakkiya', phone: DEMO_ADMIN_PHONE }],
     },
   },
-  manu: {
+  ilakkiya: {
     ...base,
-    font_scale: 'normal',
     id: '00000000-0000-0000-0000-00000000a000',
     user_id: '00000000-0000-0000-0000-00000000a000',
-    name: 'Manu',
+    name: 'Ilakkiya',
     role: 'admin',
     space: null,
     language: 'en',

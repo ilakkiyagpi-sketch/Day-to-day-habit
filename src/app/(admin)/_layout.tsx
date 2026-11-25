@@ -1,4 +1,4 @@
-/** Manu's (admin) tabs: Family dashboard · Plans · Settings. */
+/** Ilakkiya's (admin) tabs: Family dashboard · Payments · Plans · Settings. */
 import React from 'react';
 import { Tabs } from 'expo-router/tabs';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ export default function AdminLayout() {
   return (
     <Tabs screenOptions={options}>
       <Tabs.Screen name="family" options={{ title: t('tabs.dashboard'), tabBarIcon: tabIcon('people') }} />
+      <Tabs.Screen name="dues" options={{ title: t('tabs.payments'), tabBarIcon: tabIcon('wallet') }} />
       <Tabs.Screen name="plans" options={{ title: t('tabs.plans'), tabBarIcon: tabIcon('calendar') }} />
       <Tabs.Screen name="admin-settings" options={{ title: t('tabs.settings'), tabBarIcon: tabIcon('settings') }} />
     </Tabs>

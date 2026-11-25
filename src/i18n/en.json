@@ -1,4 +1,5 @@
 {
+  "adminName": "Ilakkiya",
   "appName": "Kudumbam",
   "tagline": "Your family helper",
   "common": {
@@ -11,11 +12,11 @@
     "readAloud": "Read aloud",
     "loading": "Loading…",
     "offline": "No internet. Saved on phone, will sync when internet returns.",
-    "fromManu": "From Manu",
     "demoMode": "Demo mode — sample data, nothing is saved online",
     "yes": "Yes",
     "no": "No",
-    "retry": "Try again"
+    "retry": "Try again",
+    "fromAdmin": "From $t(adminName)"
   },
   "tabs": {
     "today": "Today",
@@ -24,7 +25,8 @@
     "help": "Help",
     "dashboard": "Family",
     "plans": "Plans",
-    "settings": "Settings"
+    "settings": "Settings",
+    "payments": "Payments"
   },
   "auth": {
     "welcome": "Welcome",
@@ -41,7 +43,7 @@
     "demoTitle": "Try without internet (demo)",
     "demoAs": "Open as {{name}}",
     "signOut": "Sign out",
-    "notLinked": "Your account is not linked yet. Please ask Manu to finish setup.",
+    "notLinked": "Your account is not linked yet. Please ask $t(adminName) to finish setup.",
     "signOutConfirm": "You will need your email and a new PIN to come back. Sign out?"
   },
   "pin": {
@@ -82,7 +84,7 @@
     "pagesOf": "Page {{page}} of {{total}}",
     "quote": "Thought for today",
     "imOkay": "I'm okay today",
-    "checkedIn": "Checked in ✓ Manu can see you are okay."
+    "checkedIn": "Checked in ✓ $t(adminName) can see you are okay."
   },
   "moods": {
     "1": "Very low",
@@ -110,19 +112,13 @@
     "grandchild": "Grandchild duty",
     "location": "Where am I staying?",
     "atHome": "At home",
-    "atManus": "At Manu's house",
-    "whatManuSees": "What Manu sees",
-    "settings": "Settings"
-  },
-  "manuSees": {
-    "title": "What Manu sees",
-    "intro": "Manu can see these things to help you. He cannot see anything else.",
-    "items": "Medicines taken or missed, and the medicine photos\nBP, sugar and weight readings\nYour mood check-in\nYour daily \"I'm okay\" check-in\nHabits checklist progress\nDay plan tasks and reading progress",
-    "notSeen": "Manu cannot see your phone's messages, calls, photos gallery or location (unless you tap \"Share my location\")."
+    "settings": "Settings",
+    "whatAdminSees": "What $t(adminName) sees",
+    "atChildHouse": "At $t(adminName)'s house",
+    "payments": "Payments"
   },
   "help": {
     "title": "Help",
-    "callManu": "Call Manu",
     "call108": "Ambulance 108",
     "otherContacts": "Other contacts",
     "nearestHospital": "Nearest hospital",
@@ -134,21 +130,25 @@
     "doctor": "Doctor",
     "none": "None",
     "locationMessage": "I need help. My location: {{url}}",
-    "locationDenied": "Location permission is off. Please allow it in phone settings."
+    "locationDenied": "Location permission is off. Please allow it in phone settings.",
+    "callAdmin": "Call $t(adminName)"
   },
   "settings": {
     "title": "Settings",
     "language": "Language",
     "fontSize": "Text size",
-    "fontNormal": "Normal",
-    "fontLarge": "Large",
-    "fontXl": "Extra large",
     "theme": "Screen colours",
     "themeSystem": "Same as phone",
     "themeLight": "Light",
     "themeDark": "Dark",
     "sample": "Sample text: Amma, time for your BP tablet 💊",
-    "about": "About this app"
+    "about": "About this app",
+    "font_small": "Small",
+    "font_normal": "Normal",
+    "font_large": "Large",
+    "font_xl": "Extra large",
+    "smaller": "Smaller text",
+    "bigger": "Bigger text"
   },
   "admin": {
     "familyToday": "Family today",
@@ -170,5 +170,82 @@
   "lang": {
     "en": "English",
     "ta": "தமிழ்"
+  },
+  "adminSees": {
+    "title": "What $t(adminName) sees",
+    "intro": "$t(adminName) can see only these things, to help you. Nothing else.",
+    "items": "Medicines taken or missed, and the medicine photos\nBP, sugar and weight readings\nYour mood check-in\nYour daily \"I'm okay\" check-in\nHabits checklist progress\nDay plan tasks and reading progress\nPayment reminders and which ones are paid",
+    "notSeen": "$t(adminName) cannot see your phone's messages, calls, photo gallery or location (unless you tap \"Share my location\")."
+  },
+  "payments": {
+    "title": "Payments",
+    "subtitle": "Rent, medical, LIC and other dues",
+    "add": "Add a payment",
+    "edit": "Edit",
+    "editTitle": "Edit payment",
+    "newTitle": "New payment",
+    "paid": "Paid ✓",
+    "markedPaid": "Marked as paid. Next due: {{date}}",
+    "markedPaidDone": "Marked as paid.",
+    "dueCard": "Payments due",
+    "seeAll": "See all payments",
+    "none": "No payments added yet.",
+    "noneDue": "Nothing due this week 👍",
+    "overdue": "Overdue",
+    "dueSoon": "Due soon",
+    "later": "Later",
+    "paidOff": "Paid (one-time)",
+    "inDays_one": "Due tomorrow",
+    "inDays_other": "Due in {{count}} days",
+    "dueToday": "Due today",
+    "lateDays_one": "1 day late",
+    "lateDays_other": "{{count}} days late",
+    "dueOn": "Due on {{date}}",
+    "lastPaid": "Last paid {{date}}",
+    "forWhom": "For whom",
+    "category": "Type",
+    "cat_rent": "Rent",
+    "cat_medical": "Medical",
+    "cat_lic": "LIC / Insurance",
+    "cat_other": "Other",
+    "defTitle_rent": "House rent",
+    "defTitle_medical": "Medical bill",
+    "defTitle_lic": "LIC premium",
+    "defTitle_other": "Payment",
+    "name": "Name of the payment",
+    "amount": "Amount (₹)",
+    "payTo": "Pay to (optional)",
+    "payToHint": "e.g. house owner, LIC agent, pharmacy",
+    "dueDate": "Next due date",
+    "day": "Day",
+    "month": "Month",
+    "year": "Year",
+    "earlier": "Earlier",
+    "laterBtn": "Later",
+    "repeat": "Repeats",
+    "rep_once": "Only once",
+    "rep_monthly": "Every month",
+    "rep_quarterly": "Every 3 months",
+    "rep_half_yearly": "Every 6 months",
+    "rep_yearly": "Every year",
+    "remind": "Remind me",
+    "remind_one": "1 day before",
+    "remind_other": "{{count}} days before",
+    "method": "How to pay",
+    "method_cash": "Pay in cash",
+    "method_online": "Pay online",
+    "method_cheque": "Pay by cheque",
+    "note": "Note (optional)",
+    "save": "Save payment",
+    "delete": "Delete payment",
+    "deleteConfirm": "Delete this payment reminder?",
+    "nameRequired": "Please type a name for the payment.",
+    "saveFailed": "Could not save. Please try again.",
+    "notifyBefore_one": "Due tomorrow ({{date}}).",
+    "notifyBefore_other": "Due in {{count}} days ({{date}}).",
+    "notifyToday": "Due today.",
+    "notifyOverdue": "Not yet marked paid (was due {{date}}).",
+    "forPerson": "For {{name}}",
+    "me": "Me"
   }
 }

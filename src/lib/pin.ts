@@ -1,6 +1,6 @@
 /**
  * 4-digit PIN used to reopen the app. Only a salted SHA-256 hash is stored,
- * in the device's secure keystore (expo-secure-store). On web (Manu's laptop
+ * in the device's secure keystore (expo-secure-store). On web (Ilakkiya's laptop
  * dashboard) SecureStore is unavailable, so we fall back to AsyncStorage —
  * acceptable because the PIN is a convenience lock, not the security boundary
  * (Supabase Auth + RLS are).
