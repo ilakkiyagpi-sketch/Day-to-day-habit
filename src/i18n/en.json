@@ -247,5 +247,11 @@
     "notifyOverdue": "Not yet marked paid (was due {{date}}).",
     "forPerson": "For {{name}}",
     "me": "Me"
+  },
+  "webNotify": {
+    "title": "Turn on reminders",
+    "body": "Allow notifications so this phone can remind you about payments. Open the app once a day to get them.",
+    "turnOn": "Allow notifications",
+    "blocked": "Notifications are blocked. Long-press the app icon → App info → Notifications → Allow, then open the app again."
   }
 }

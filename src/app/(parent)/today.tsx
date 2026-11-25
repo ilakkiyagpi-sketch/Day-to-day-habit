@@ -16,6 +16,7 @@ import { BigButton } from '../../components/BigButton';
 import { useToast } from '../../components/Toast';
 import { TextSizeControl } from '../../components/TextSizeControl';
 import { PaymentsDueCard } from '../../components/PaymentsDueCard';
+import { WebReminderCard } from '../../components/WebReminderCard';
 import { useAuth } from '../../lib/auth';
 import { usePrefs } from '../../theme/PreferencesProvider';
 import { dayPart, formatTime, nextByTime } from '../../lib/time';
@@ -154,6 +155,7 @@ export default function Today() {
       )}
 
       {/* Payment reminders (only when something is due this week) */}
+      <WebReminderCard />
       <PaymentsDueCard hideWhenEmpty />
 
       {/* 5. Daily "I'm okay" check-in */}

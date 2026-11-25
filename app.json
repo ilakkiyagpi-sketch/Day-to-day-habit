@@ -33,7 +33,13 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "output": "single",
-      "bundler": "metro"
+      "bundler": "metro",
+      "name": "Kudumbam",
+      "shortName": "Kudumbam",
+      "lang": "ta",
+      "themeColor": "#0B5D4B",
+      "backgroundColor": "#FFF8EF",
+      "description": "Family care helper for Amma, Appa and Ilakkiya"
     },
     "plugins": [
       "expo-router",
@@ -61,7 +67,13 @@
     ],
     "scheme": "kudumbam",
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "baseUrl": "/Day-to-day-habit"
+    },
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFF8EF"
     }
   }
 }

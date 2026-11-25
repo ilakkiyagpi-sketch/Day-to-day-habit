@@ -60,6 +60,7 @@ You need [Node.js 20 or newer](https://nodejs.org).
 ```bash
 npm install
 npx expo start --web     # opens in the browser, in demo mode
+./scripts/build-web.sh   # builds the GitHub Pages version into dist/
 ```
 
 Pick "Open as Amma / Appa / Ilakkiya", choose any 4-digit PIN, and look around.
@@ -84,22 +85,40 @@ Pick "Open as Amma / Appa / Ilakkiya", choose any 4-digit PIN, and look around.
 > Phone-number (SMS) sign-in needs a paid SMS provider (for example Twilio), so it is off.
 > Email codes are free. Say the word if you want SMS added.
 
-## Install on the parents' Android phones
+## Install on the phone
 
-The app needs a real build (not Expo Go) because of the medicine alarm coming in Phase 2.
+GitHub builds both versions automatically every time code is pushed (see `.github/workflows/build.yml`).
+No Expo account is needed. Progress shows in the repository's **Actions** tab.
 
-1. Create a free account at [expo.dev](https://expo.dev), then on your computer:
-   ```bash
-   npm install -g eas-cli
-   eas login
-   eas init                         # links this project to your Expo account
-   eas env:create --name EXPO_PUBLIC_SUPABASE_URL --value https://YOUR-PROJECT.supabase.co --environment preview
-   eas env:create --name EXPO_PUBLIC_SUPABASE_ANON_KEY --value YOUR-ANON-KEY --environment preview
-   eas build --platform android --profile preview
-   ```
-2. When the build finishes, Expo shows a link and a QR code. Open it on the parent's phone, download the **APK**,
-   and allow "Install unknown apps" when Android asks.
-3. Open Kudumbam, choose தமிழ், enter their email and the code from the email, and set a 4-digit PIN with them.
+### Option A: Web app from a link (like Prelims Arena and Happy Parenthood)
+
+**Link:** https://ilakkiyagpi-sketch.github.io/Day-to-day-habit/
+
+One-time setup: in GitHub, open **Settings → Pages**, set **Source: Deploy from a branch**, pick the **`gh-pages`** branch and **`/ (root)`**, and click Save.
+
+- **Android (Chrome):** open the link, then ⋮ menu → **Install app** (or "Add to Home screen").
+- **iPhone (Safari):** open the link, then Share → **Add to Home Screen**.
+- Works offline after the first visit. Tap **Allow notifications** on the Today or Payments screen.
+  Web reminders appear when the app is opened (once a day per payment) and while it is open. A browser can't wake a closed app.
+
+### Option B: Android app (APK) for reliable reminders and, later, the medicine alarm
+
+**Download (always the newest build):**
+https://github.com/ilakkiyagpi-sketch/Day-to-day-habit/releases/latest/download/kudumbam.apk
+
+1. Open the link on the parent's phone. The APK downloads (about 50–80 MB).
+2. Tap the downloaded file. When Android asks, allow **Install unknown apps** for Chrome / Files.
+3. Open **Kudumbam**, choose தமிழ், and set a 4-digit PIN with them.
+4. Allow notifications when asked. Payment reminders then come at 9 am even when the app is closed.
+
+**Updating:** install the newer APK the same way. It replaces the old one and keeps the data.
+
+> The APK is signed with the project's fixed development key so updates install smoothly. Before sharing it
+> outside the family, switch to a private signing key (ask Claude to set this up with GitHub secrets).
+
+**Connecting the real backend:** add repository secrets `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+(**Settings → Secrets and variables → Actions**), then re-run the workflow (**Actions → Build web + Android → Run workflow**).
+Until then, both versions run in demo mode.
 
 ## iPhone
 

@@ -12,6 +12,7 @@ import { Screen } from '../components/Screen';
 import { AppText } from '../components/AppText';
 import { BigButton } from '../components/BigButton';
 import { PaymentCard } from '../components/PaymentCard';
+import { WebReminderCard } from '../components/WebReminderCard';
 import { useToast } from '../components/Toast';
 import { usePayments } from '../data/payments';
 import { usePrefs } from '../theme/PreferencesProvider';
@@ -47,6 +48,7 @@ export function PaymentsScreen({ showBack }: { showBack?: boolean }) {
   return (
     <Screen title={t('payments.title')} back={showBack}>
       <AppText className="text-muted mb-4">{t('payments.subtitle')}</AppText>
+      <WebReminderCard />
       <BigButton icon="add-circle" label={t('payments.add')} onPress={() => router.push('/payment-edit')} />
       <View className="h-4" />
 

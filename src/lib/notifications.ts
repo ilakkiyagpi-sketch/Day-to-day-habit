@@ -10,7 +10,7 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import i18n from '../i18n';
-import { formatDate, formatRupees, reminderSlots, type Payment } from './payments';
+import { daysUntil, formatDate, formatRupees, reminderSlots, toISODate, type Payment } from './payments';
 
 const PAYMENT_CHANNEL = 'payments';
 const KIND = 'payment';
@@ -71,7 +71,7 @@ export function paymentMessage(p: Payment, kind: 'before' | 'due' | 'overdue', d
  * several people (Ilakkiya's phone), or undefined for one's own.
  */
 export async function syncPaymentReminders(payments: Payment[], nameOf: (userId: string) => string | undefined) {
-  if (Platform.OS === 'web') return;
+  if (Platform.OS === 'web') return syncWebReminders(payments, nameOf);
   await initNotifications();
 
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
@@ -94,5 +94,85 @@ export async function syncPaymentReminders(payments: Payment[], nameOf: (userId:
       content: { title, body, sound: 'default', data: { kind: KIND, paymentId: p.id, url: '/payments' } },
       trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: s.at, channelId: PAYMENT_CHANNEL },
     });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Web version (installed from GitHub Pages)
+//
+// Browsers cannot schedule a notification for next week the way the phone app
+// can. So the web version: (1) when the app is opened, shows a notification for
+// every payment that is inside its reminder window (once per payment per day),
+// and (2) while the app stays open, sets timers for the next reminders today.
+// ---------------------------------------------------------------------------
+
+export type WebNotifyState = 'unsupported' | 'default' | 'granted' | 'denied';
+
+export function webNotifyState(): WebNotifyState {
+  if (Platform.OS !== 'web' || typeof window === 'undefined' || !('Notification' in window)) return 'unsupported';
+  return Notification.permission as WebNotifyState;
+}
+
+/** Must be called from a button tap (browsers require a user gesture). */
+export async function enableWebNotifications(): Promise<boolean> {
+  if (webNotifyState() === 'unsupported') return false;
+  return (await Notification.requestPermission()) === 'granted';
+}
+
+let webTimers: ReturnType<typeof setTimeout>[] = [];
+
+async function showWeb(id: string, title: string, body: string) {
+  try {
+    const reg = await navigator.serviceWorker?.getRegistration();
+    if (reg) {
+      await reg.showNotification(title, {
+        body,
+        tag: `pay-${id}`,
+        icon: reg.scope + 'icons/icon-192.png',
+        badge: reg.scope + 'icons/icon-192.png',
+        data: { path: 'payments' },
+      });
+      return;
+    }
+  } catch {}
+  new Notification(title, { body, tag: `pay-${id}` });
+}
+
+function seenToday(id: string): boolean {
+  const key = `kudumbam.notified.${id}.${toISODate(new Date())}`;
+  try {
+    if (localStorage.getItem(key)) return true;
+    localStorage.setItem(key, '1');
+  } catch {}
+  return false;
+}
+
+async function syncWebReminders(payments: Payment[], nameOf: (userId: string) => string | undefined) {
+  webTimers.forEach(clearTimeout);
+  webTimers = [];
+  if (webNotifyState() !== 'granted') return;
+  const now = new Date();
+
+  for (const p of payments) {
+    if (!p.active) continue;
+    const left = daysUntil(p.due_date, now);
+    // (1) Inside the reminder window right now → remind once today.
+    if (left <= p.remind_days_before && !seenToday(p.id)) {
+      const kind = left < 0 ? 'overdue' : left === 0 ? 'due' : 'before';
+      const { title, body } = paymentMessage(p, kind, left, nameOf(p.user_id));
+      await showWeb(p.id, title, body);
+    }
+    // (2) Later today, while the app stays open.
+    for (const slot of reminderSlots(p, now)) {
+      const ms = slot.at.getTime() - now.getTime();
+      if (ms > 0 && ms < 12 * 3600 * 1000) {
+        webTimers.push(
+          setTimeout(() => {
+            const { title, body } = paymentMessage(p, slot.kind, slot.daysLeft, nameOf(p.user_id));
+            showWeb(p.id, title, body);
+          }, ms),
+        );
+      }
+    }
   }
 }

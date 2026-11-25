@@ -8,6 +8,7 @@ import { AppText } from '../components/AppText';
 import { BigButton } from '../components/BigButton';
 import { ChoiceRow } from '../components/ChoiceRow';
 import { Disclaimer } from '../components/Disclaimer';
+import { WebReminderCard } from '../components/WebReminderCard';
 import { useAuth } from '../lib/auth';
 import { confirm } from '../lib/confirm';
 import { usePrefs, type Language, type SchemePref } from '../theme/PreferencesProvider';
@@ -53,6 +54,7 @@ export function SettingsScreen() {
           ]}
         />
       </Card>
+      <WebReminderCard />
       <Disclaimer />
       <View className="mt-2">
         <BigButton kind="secondary" icon="log-out" label={t('auth.signOut')} onPress={async () => {
