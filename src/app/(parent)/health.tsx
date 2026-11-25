@@ -1,25 +1,21 @@
-/** Health hub. Phase 1 lays out the sections; Phase 2 fills them in. */
+/** Health hub. The sections are laid out now; Phase 2 fills them in. */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Screen } from '../../components/Screen';
-import { Card } from '../../components/Card';
-import { AppText } from '../../components/AppText';
+import { ListGroup, ListRow } from '../../components/ListRow';
+import { Chip } from '../../components/Chip';
 
 export default function Health() {
   const { t } = useTranslation();
-  const sections = [
-    { key: 'medicines', icon: 'medkit' },
-    { key: 'vitals', icon: 'pulse' },
-    { key: 'appointments', icon: 'calendar' },
-    { key: 'documents', icon: 'document-text' },
-  ] as const;
+  const soon = <Chip label={t('common.soon')} />;
   return (
-    <Screen title={t('health.title')}>
-      {sections.map((s) => (
-        <Card key={s.key} title={t(`health.${s.key}`)} icon={s.icon}>
-          <AppText className="text-muted">{t('health.comingSoon')}</AppText>
-        </Card>
-      ))}
+    <Screen title={t('health.title')} subtitle={t('health.subtitle')}>
+      <ListGroup>
+        <ListRow icon="medkit" hue="rose" title={t('health.medicines')} subtitle={t('health.medicinesHint')} right={soon} />
+        <ListRow icon="pulse" hue="blue" title={t('health.vitals')} subtitle={t('health.vitalsHint')} right={soon} />
+        <ListRow icon="calendar" hue="violet" title={t('health.appointments')} subtitle={t('health.appointmentsHint')} right={soon} />
+        <ListRow icon="document-text" hue="amber" title={t('health.documents')} subtitle={t('health.documentsHint')} right={soon} />
+      </ListGroup>
     </Screen>
   );
 }

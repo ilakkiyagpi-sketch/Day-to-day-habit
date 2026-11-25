@@ -6,6 +6,7 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppText } from './AppText';
+import { SHADOW } from '../theme/palette';
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del'];
 
@@ -25,7 +26,7 @@ export function PinPad({ value, onChange, length = 4 }: { value: string; onChang
         {Array.from({ length }).map((_, i) => (
           <View
             key={i}
-            className={`w-6 h-6 rounded-full mx-3 border-2 border-ink ${i < value.length ? 'bg-ink' : 'bg-transparent'}`}
+            className={`w-5 h-5 rounded-full mx-3 ${i < value.length ? 'bg-primary' : 'bg-line'}`}
           />
         ))}
       </View>
@@ -39,9 +40,10 @@ export function PinPad({ value, onChange, length = 4 }: { value: string; onChang
               onPress={() => press(k)}
               accessibilityRole="button"
               accessibilityLabel={k === 'del' ? t('pin.delete') : k}
-              className="w-[30%] m-[1.5%] h-[72px] rounded-card bg-surface border-2 border-line items-center justify-center active:bg-line"
+              className="w-[30%] m-[1.5%] h-[72px] rounded-card bg-surface items-center justify-center active:bg-primary-soft"
+              style={SHADOW.card}
             >
-              <AppText variant={k === 'del' ? 'body' : 'display'} bold>
+              <AppText variant={k === 'del' ? 'body' : 'display'} bold className={k === 'del' ? 'text-muted' : ''}>
                 {k === 'del' ? `⌫ ${t('pin.delete')}` : k}
               </AppText>
             </Pressable>

@@ -22,7 +22,7 @@ export function SettingsScreen() {
   const { signOut } = useAuth();
   return (
     <Screen title={t('settings.title')}>
-      <Card title={t('settings.language')} icon="language">
+      <Card title={t('settings.language')} icon="language" hue="blue">
         <ChoiceRow<Language>
           label={t('settings.language')}
           value={display.language}
@@ -33,16 +33,18 @@ export function SettingsScreen() {
           ]}
         />
       </Card>
-      <Card title={t('settings.fontSize')} icon="text">
+      <Card title={t('settings.fontSize')} icon="text" hue="violet">
         <ChoiceRow<FontScale>
           label={t('settings.fontSize')}
           value={display.fontScale}
           onChange={display.setTextSize}
           options={FONT_SCALES.map((value) => ({ value, label: t(`settings.font_${value}`) }))}
         />
-        <AppText className="mt-3">{t('settings.sample')}</AppText>
+        <View className="mt-3 bg-surface-2 rounded-2xl p-3">
+          <AppText>{t('settings.sample')}</AppText>
+        </View>
       </Card>
-      <Card title={t('settings.theme')} icon="contrast">
+      <Card title={t('settings.theme')} icon="contrast" hue="teal">
         <ChoiceRow<SchemePref>
           label={t('settings.theme')}
           value={prefs.scheme}

@@ -10,6 +10,8 @@ import { AppText } from '../components/AppText';
 import { BigButton } from '../components/BigButton';
 import { ChoiceRow } from '../components/ChoiceRow';
 import { Disclaimer } from '../components/Disclaimer';
+import { BrandHeader } from '../components/BrandHeader';
+import { SHADOW } from '../theme/palette';
 import { useAuth } from '../lib/auth';
 import { usePrefs, type Language } from '../theme/PreferencesProvider';
 import { TEXT_SIZES } from '../theme/typography';
@@ -51,13 +53,9 @@ export default function SignIn() {
 
   return (
     <Screen>
-      <AppText variant="huge" accessibilityRole="header">
-        {t('appName')}
-      </AppText>
-      <AppText variant="lead" className="text-muted mb-6">
-        {t('tagline')}
-      </AppText>
+      <BrandHeader />
 
+      <View className="bg-surface rounded-card p-4 mb-5" style={SHADOW.card}>
       <AppText bold className="mb-2">
         {t('auth.chooseLanguage')}
       </AppText>
@@ -70,12 +68,11 @@ export default function SignIn() {
           { value: 'en', label: t('lang.en') },
         ]}
       />
-
-      <View className="h-6" />
+      </View>
 
       {isDemo ? (
         <View>
-          <AppText variant="title" className="mb-3">
+          <AppText variant="lead" bold className="mb-3 ml-1">
             {t('auth.demoTitle')}
           </AppText>
           {(['amma', 'appa', 'ilakkiya'] as const).map((who) => (
@@ -102,7 +99,7 @@ export default function SignIn() {
             autoComplete="email"
             keyboardType="email-address"
             accessibilityLabel={t('auth.emailLabel')}
-            className="bg-surface border-2 border-line rounded-card px-4 min-h-tap mb-4"
+            className="bg-surface border border-line rounded-2xl px-4 min-h-tap mb-4"
             style={inputStyle}
           />
           <BigButton label={t('auth.sendCode')} icon="mail" onPress={onSend} loading={busy} />
@@ -120,7 +117,7 @@ export default function SignIn() {
             autoComplete="one-time-code"
             textContentType="oneTimeCode"
             accessibilityLabel={t('auth.codeLabel')}
-            className="bg-surface border-2 border-line rounded-card px-4 min-h-tap mb-4 text-center"
+            className="bg-surface border border-line rounded-2xl px-4 min-h-tap mb-4 text-center"
             style={[inputStyle, { letterSpacing: 8 }]}
           />
           <BigButton

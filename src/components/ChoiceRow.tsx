@@ -1,7 +1,9 @@
-/** Row of big selectable options (e.g. language, font size). Radio semantics. */
+/** Row of big selectable options (language, text size, repeat…). Radio semantics. */
 import React from 'react';
 import { Pressable, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { AppText } from './AppText';
+import { usePrefs } from '../theme/PreferencesProvider';
 
 type Option<T extends string> = { value: T; label: string };
 
@@ -16,6 +18,7 @@ export function ChoiceRow<T extends string>({
   onChange: (v: T) => void;
   label: string;
 }) {
+  const { color } = usePrefs();
   return (
     <View accessibilityRole="radiogroup" accessibilityLabel={label} className="flex-row flex-wrap -m-1">
       {options.map((o) => {
@@ -27,12 +30,12 @@ export function ChoiceRow<T extends string>({
             accessibilityRole="radio"
             accessibilityState={{ selected }}
             accessibilityLabel={o.label}
-            className={`m-1 min-h-tap px-4 rounded-card border-2 items-center justify-center flex-grow ${
-              selected ? 'bg-primary border-primary' : 'bg-surface border-line'
+            className={`m-1 min-h-tap px-4 rounded-2xl flex-row items-center justify-center flex-grow ${
+              selected ? 'bg-primary' : 'bg-surface-2 border border-line'
             }`}
           >
-            <AppText bold className={selected ? 'text-on-primary' : 'text-ink'}>
-              {selected ? '✓ ' : ''}
+            {selected ? <Ionicons name="checkmark-circle" size={20} color={color('on-primary')} /> : null}
+            <AppText bold className={`${selected ? 'text-on-primary ml-1.5' : 'text-ink'}`}>
               {o.label}
             </AppText>
           </Pressable>

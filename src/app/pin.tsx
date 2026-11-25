@@ -10,6 +10,7 @@ import { Screen } from '../components/Screen';
 import { AppText } from '../components/AppText';
 import { BigButton } from '../components/BigButton';
 import { PinPad } from '../components/PinPad';
+import { BrandHeader } from '../components/BrandHeader';
 import { useAuth } from '../lib/auth';
 import { biometricAvailable, checkPin, setPin, unlockWithBiometric } from '../lib/pin';
 
@@ -68,7 +69,8 @@ export default function PinScreen() {
 
   return (
     <Screen>
-      <AppText variant="title" accessibilityRole="header" className="text-center mt-4">
+      <BrandHeader compact />
+      <AppText variant="lead" bold accessibilityRole="header" className="text-center">
         {profile?.name ? `${profile.name} — ` : ''}
         {title}
       </AppText>

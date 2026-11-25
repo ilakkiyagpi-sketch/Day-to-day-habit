@@ -19,9 +19,10 @@ on:
 permissions:
   contents: write # push gh-pages and create releases
 
+# A new push waits for the running build instead of cancelling it.
 concurrency:
   group: build-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}

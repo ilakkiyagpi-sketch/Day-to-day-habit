@@ -196,3 +196,13 @@ export function formatDate(iso: string, lang: 'en' | 'ta'): string {
 }
 
 export const monthName = (month0: number, lang: 'en' | 'ta') => MONTHS[lang][month0];
+
+const WEEKDAYS = {
+  en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  ta: ['ஞாயிறு', 'திங்கள்', 'செவ்வாய்', 'புதன்', 'வியாழன்', 'வெள்ளி', 'சனி'],
+};
+
+/** "Wednesday, 25 Nov 2026" / "புதன், 25 நவம்பர் 2026". */
+export function formatLongDate(d: Date, lang: 'en' | 'ta'): string {
+  return `${WEEKDAYS[lang][d.getDay()]}, ${formatDate(toISODate(d), lang)}`;
+}

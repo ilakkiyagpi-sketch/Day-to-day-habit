@@ -11,14 +11,14 @@ import { BigButton } from './BigButton';
 import { enableWebNotifications, syncPaymentReminders, webNotifyState } from '../lib/notifications';
 import { usePayments } from '../data/payments';
 
-export function WebReminderCard() {
+export function WebReminderCard({ hideWhenBlocked }: { hideWhenBlocked?: boolean }) {
   const { t } = useTranslation();
   const { payments, nameOf } = usePayments();
   const [state, setState] = useState(webNotifyState());
-  if (state === 'unsupported' || state === 'granted') return null;
+  if (state === 'unsupported' || state === 'granted' || (hideWhenBlocked && state === 'denied')) return null;
 
   return (
-    <Card title={t('webNotify.title')} icon="notifications" tone="warn">
+    <Card title={t('webNotify.title')} icon="notifications" hue="amber">
       {state === 'denied' ? (
         <AppText>{t('webNotify.blocked')}</AppText>
       ) : (

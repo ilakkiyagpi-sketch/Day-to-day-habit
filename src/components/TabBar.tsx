@@ -1,9 +1,9 @@
 /**
- * Shared tab-bar options: a tall bar (≥ 80px) with big icons AND text labels.
- * Max 4 tabs per role (design rule: no hamburger menus).
+ * Shared tab-bar options: white bar with a soft top shadow; the active tab's
+ * icon sits in a green pill. Icons always have text labels (max 4 tabs).
  */
 import React from 'react';
-import { Text, type ColorValue } from 'react-native';
+import { Text, View, type ColorValue } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { usePrefs } from '../theme/PreferencesProvider';
@@ -17,24 +17,25 @@ export function useTabScreenOptions() {
     tabBarActiveTintColor: color('primary'),
     tabBarInactiveTintColor: color('muted'),
     tabBarStyle: {
-      height: 88 + insets.bottom,
-      paddingTop: 8,
+      height: 92 + insets.bottom,
+      paddingTop: 10,
       paddingBottom: 8 + insets.bottom,
       backgroundColor: color('surface'),
-      borderTopColor: color('line'),
-      borderTopWidth: 1,
+      borderTopWidth: 0,
+      boxShadow: '0px -2px 12px rgba(28, 25, 23, 0.06)',
     },
-    // Custom label: up to 2 lines so Tamil words like "என் பகுதி" are never cut off.
-    tabBarLabel: ({ color: c, children }: { color: ColorValue; children: string }) => (
+    // Up to 2 lines so Tamil words like "என் பகுதி" are never cut off.
+    tabBarLabel: ({ color: c, focused, children }: { color: ColorValue; focused: boolean; children: string }) => (
       <Text
         numberOfLines={2}
         maxFontSizeMultiplier={1}
         style={{
           color: c,
-          fontSize: Math.min(15 * scale, 18), // capped so 4 labels always fit
-          lineHeight: Math.min(15 * scale, 18) * 1.3,
-          fontFamily: FONT_FAMILY[language].bold,
+          fontSize: Math.min(14 * scale, 17),
+          lineHeight: Math.min(14 * scale, 17) * 1.3,
+          fontFamily: FONT_FAMILY[language][focused ? 'bold' : 'regular'],
           textAlign: 'center',
+          marginTop: 2,
         }}
       >
         {children}
@@ -45,7 +46,15 @@ export function useTabScreenOptions() {
 }
 
 export function tabIcon(name: keyof typeof Ionicons.glyphMap) {
-  return function TabIcon({ color }: { color: ColorValue }) {
-    return <Ionicons name={name} size={28} color={color as string} />;
+  return function TabIcon({ color, focused }: { color: ColorValue; focused: boolean }) {
+    return (
+      <View className={`rounded-full px-4 py-1 ${focused ? 'bg-primary-soft' : ''}`}>
+        <Ionicons
+          name={(focused ? name : `${name}-outline`) as keyof typeof Ionicons.glyphMap}
+          size={24}
+          color={color as string}
+        />
+      </View>
+    );
   };
 }

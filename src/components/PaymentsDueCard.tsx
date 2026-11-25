@@ -24,6 +24,7 @@ export function PaymentsDueCard({ hideWhenEmpty }: { hideWhenEmpty?: boolean }) 
     <Card
       title={t('payments.dueCard')}
       icon="wallet"
+      hue="amber"
       tone={due.some((p) => daysUntil(p.due_date) < 0) ? 'bad' : due.length ? 'warn' : 'good'}
       speakText={[t('payments.dueCard'), ...due.slice(0, 3).map(line)].join('. ') || t('payments.noneDue')}
     >

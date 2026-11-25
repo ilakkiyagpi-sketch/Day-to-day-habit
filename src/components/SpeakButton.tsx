@@ -1,5 +1,5 @@
 /**
- * "Read aloud" button shown on every card. Uses on-device text-to-speech in
+ * "Read aloud" pill shown on every card. Uses on-device text-to-speech in
  * the user's language (ta-IN / en-IN). Tapping again stops speaking.
  */
 import React, { useState } from 'react';
@@ -36,10 +36,12 @@ export function SpeakButton({ text }: { text: string }) {
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={t('common.readAloud')}
-      className="min-h-tap min-w-tap flex-row items-center px-2 rounded-xl active:opacity-70"
+      // 56px tall touch area, visually a slim pill
+      hitSlop={{ top: 10, bottom: 10 }}
+      className="flex-row items-center px-3 py-1.5 rounded-full bg-primary-soft active:opacity-70"
     >
-      <Ionicons name={speaking ? 'stop-circle' : 'volume-high'} size={24} color={color('primary')} />
-      <AppText variant="caption" bold className="ml-1 text-primary">
+      <Ionicons name={speaking ? 'stop-circle' : 'volume-high'} size={18} color={color('primary')} />
+      <AppText variant="caption" bold className="ml-1.5 text-primary">
         {t('common.readAloud')}
       </AppText>
     </Pressable>

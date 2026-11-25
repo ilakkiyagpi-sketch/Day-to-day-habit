@@ -3,6 +3,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Card } from './Card';
+import { Chip } from './Chip';
+import type { Hue } from '../theme/palette';
 import { AppText } from './AppText';
 import { BigButton } from './BigButton';
 import { usePrefs } from '../theme/PreferencesProvider';
@@ -14,9 +16,9 @@ export const CATEGORY_ICON: Record<PaymentCategory, 'home' | 'medkit' | 'shield-
   lic: 'shield-checkmark',
   other: 'wallet',
 };
+export const CATEGORY_HUE: Record<PaymentCategory, Hue> = { rent: 'blue', medical: 'rose', lic: 'violet', other: 'teal' };
 
-const TONE = { overdue: 'bad', today: 'warn', soon: 'warn', later: 'default', paid: 'good' } as const;
-const WHEN_CLASS = { overdue: 'text-bad', today: 'text-warn', soon: 'text-warn', later: 'text-ink', paid: 'text-good' } as const;
+const CHIP = { overdue: 'bad', today: 'warn', soon: 'warn', later: 'neutral', paid: 'good' } as const;
 
 /** "Due in 3 days" / "Due today" / "2 days late". */
 export function useDueLabel() {
@@ -49,14 +51,12 @@ export function PaymentCard({ payment: p, who, onPaid, onEdit, compact }: Props)
 
   const body = (
     <>
-      <View className="flex-row flex-wrap items-baseline justify-between">
-        {amount ? <AppText variant="title">{amount}</AppText> : null}
-        <AppText bold className={WHEN_CLASS[status]}>
-          {when}
-        </AppText>
+      <Chip tone={CHIP[status]} label={when} />
+      <View className="flex-row flex-wrap items-baseline justify-between mt-2">
+        {amount ? <AppText variant="huge">{amount}</AppText> : null}
       </View>
       <AppText className="text-muted">{t('payments.dueOn', { date: formatDate(p.due_date, language) })}</AppText>
-      <AppText>{how}</AppText>
+      <AppText className="text-muted">{how}</AppText>
       {p.note ? <AppText className="text-muted">{p.note}</AppText> : null}
       {p.last_paid_on ? (
         <AppText variant="caption" className="text-muted">
@@ -64,14 +64,14 @@ export function PaymentCard({ payment: p, who, onPaid, onEdit, compact }: Props)
         </AppText>
       ) : null}
       {!compact && (onPaid || onEdit) ? (
-        <View className="flex-row mt-3 -mx-1">
+        <View className="mt-3">
           {onPaid && p.active ? (
-            <View className="flex-1 mx-1">
-              <BigButton label={t('payments.paid')} onPress={onPaid} />
+            <View className="mb-2">
+              <BigButton icon="checkmark-circle" label={t('payments.paid').replace(' ✓', '')} onPress={onPaid} />
             </View>
           ) : null}
           {onEdit ? (
-            <View className="flex-1 mx-1">
+            <View>
               <BigButton kind="secondary" icon="create" label={t('payments.edit')} onPress={onEdit} />
             </View>
           ) : null}
@@ -81,7 +81,7 @@ export function PaymentCard({ payment: p, who, onPaid, onEdit, compact }: Props)
   );
 
   return (
-    <Card title={title} icon={CATEGORY_ICON[p.category]} tone={TONE[status]} speakText={speak}>
+    <Card title={title} subtitle={t(`payments.cat_${p.category}`)} icon={CATEGORY_ICON[p.category]} hue={CATEGORY_HUE[p.category]} speakText={speak}>
       {body}
     </Card>
   );

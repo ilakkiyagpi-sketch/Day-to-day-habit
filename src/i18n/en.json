@@ -16,7 +16,8 @@
     "yes": "Yes",
     "no": "No",
     "retry": "Try again",
-    "fromAdmin": "From $t(adminName)"
+    "fromAdmin": "From $t(adminName)",
+    "soon": "Coming soon"
   },
   "tabs": {
     "today": "Today",
@@ -84,7 +85,11 @@
     "pagesOf": "Page {{page}} of {{total}}",
     "quote": "Thought for today",
     "imOkay": "I'm okay today",
-    "checkedIn": "Checked in ✓ $t(adminName) can see you are okay."
+    "checkedIn": "Checked in ✓ $t(adminName) can see you are okay.",
+    "statMedicine": "Next tablet",
+    "statHabits": "Habits done",
+    "statPayments": "Payments due",
+    "dayPlanHint": "Speak your plan in Tamil or English"
   },
   "moods": {
     "1": "Very low",
@@ -99,7 +104,12 @@
     "vitals": "BP, sugar & weight",
     "appointments": "Doctor visits",
     "documents": "Reports & prescriptions",
-    "comingSoon": "This part is coming in the next update."
+    "comingSoon": "This part is coming in the next update.",
+    "subtitle": "Medicines, readings and doctor visits",
+    "medicinesHint": "Reminders with photo proof",
+    "vitalsHint": "Colour shows if it is in range",
+    "appointmentsHint": "Reminders a day before",
+    "documentsHint": "Photos of reports, kept by date"
   },
   "mySpace": {
     "title": "My space",
@@ -115,7 +125,10 @@
     "settings": "Settings",
     "whatAdminSees": "What $t(adminName) sees",
     "atChildHouse": "At $t(adminName)'s house",
-    "payments": "Payments"
+    "payments": "Payments",
+    "readingTitle": "Reading & astrology",
+    "more": "More",
+    "settingsHint": "Language, text size, colours"
   },
   "help": {
     "title": "Help",
@@ -131,7 +144,10 @@
     "none": "None",
     "locationMessage": "I need help. My location: {{url}}",
     "locationDenied": "Location permission is off. Please allow it in phone settings.",
-    "callAdmin": "Call $t(adminName)"
+    "callAdmin": "Call $t(adminName)",
+    "subtitle": "Help is one tap away",
+    "quick": "Quick help",
+    "shareLocationHint": "Sends a map link by SMS"
   },
   "settings": {
     "title": "Settings",
@@ -165,7 +181,11 @@
     "noAlerts": "No alerts. All is well 🙏",
     "call": "Call {{name}}",
     "plansTitle": "Plans & reminders",
-    "plansSoon": "Creating reminders and day plans for Amma and Appa comes in Phase 3."
+    "plansSoon": "Creating reminders and day plans for Amma and Appa comes in Phase 3.",
+    "subtitle": "Everyone's day at a glance",
+    "statDoses": "Doses taken",
+    "statAlerts": "Alerts",
+    "statDue": "Payments due"
   },
   "lang": {
     "en": "English",

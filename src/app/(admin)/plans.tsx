@@ -9,7 +9,7 @@ export default function Plans() {
   const { t } = useTranslation();
   return (
     <Screen title={t('admin.plansTitle')}>
-      <Card title={t('admin.plansTitle')} icon="calendar">
+      <Card title={t('admin.plansTitle')} icon="calendar" hue="violet">
         <AppText className="text-muted">{t('admin.plansSoon')}</AppText>
       </Card>
     </Screen>
