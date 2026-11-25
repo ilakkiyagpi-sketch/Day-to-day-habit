@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="%LANG_ISO_CODE%">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+    <title>%WEB_TITLE%</title>
+    <!-- Installable web app (PWA): own icon on the home screen, works offline -->
+    <link rel="manifest" href="/Day-to-day-habit/manifest.webmanifest" />
+    <meta name="theme-color" content="#0B5D4B" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Kudumbam" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="apple-touch-icon" href="/Day-to-day-habit/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/Day-to-day-habit/icons/icon-192.png" />
+    <!-- react-native-web style reset -->
+    <style id="expo-reset">
+      html, body { height: 100%; background: #FFF8EF; }
+      body { overflow: hidden; }
+      #root { display: flex; height: 100%; flex: 1; }
+      @media (prefers-color-scheme: dark) { html, body { background: #0C0C0C; } }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run Kudumbam.</noscript>
+    <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/Day-to-day-habit/sw.js', { scope: '/Day-to-day-habit/' }).catch(function () {});
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+# Builds Kudumbam on GitHub's free servers — no Expo account needed.
+#
+#  web     → installable web app (PWA) published to the `gh-pages` branch
+#            (GitHub Pages: https://ilakkiyagpi-sketch.github.io/Day-to-day-habit/)
+#  android → Android APK attached to a GitHub Release; the newest one is always at
+#            https://github.com/ilakkiyagpi-sketch/Day-to-day-habit/releases/latest/download/kudumbam.apk
+#
+# Optional repository secrets (Settings → Secrets and variables → Actions):
+#   EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ANON_KEY
+# Without them both builds run in demo mode (sample data, nothing saved online).
+
+name: Build web + Android
+
+on:
+  push:
+    branches: [main, ccr-23d3e8c6-ada47t]
+  workflow_dispatch:
+
+permissions:
+  contents: write # push gh-pages and create releases
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
+  EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck and unit tests
+        run: npm run typecheck && npm test
+      - name: Build web app
+        run: ./scripts/build-web.sh
+      - name: Publish to GitHub Pages (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: 'Deploy web app from ${{ github.sha }}'
+
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: npm ci
+      - name: Generate the Android project (from app.json)
+        run: npx expo prebuild --platform android --no-install
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build release APK
+        working-directory: android
+        # arm64 + armv7 covers practically every Android phone and keeps the build fast.
+        # The release build is signed with the project's fixed key, so a newer APK
+        # installs over an older one without losing data.
+        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
+      - name: Rename APK
+        run: cp android/app/build/outputs/apk/release/app-release.apk kudumbam.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kudumbam-apk
+          path: kudumbam.apk
+      - name: Publish as a GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-build-${{ github.run_number }}
+          name: Kudumbam Android build ${{ github.run_number }}
+          target_commitish: ${{ github.sha }}
+          make_latest: true
+          files: kudumbam.apk
+          body: |
+            Install on Android: open this page on the phone, tap **kudumbam.apk**, then allow "Install unknown apps" when asked.
+            Built from commit ${{ github.sha }} on branch ${{ github.ref_name }}.
